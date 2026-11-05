@@ -1,23 +1,43 @@
-import socket 
+import socket
+from AlphaBot import AlphaBot
 
-IP_PORTA = ("192.168.1.116", 22)
-BUFFER = 4096
+HOST = "0.0.0.0"
+PORTA = 5000
+BUFFER_SIZE = 1024
 
-def main():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(IP_PORTA)
-    print("Server in ascolto...")
-    s.listen()
-    connessione, _ = s.accept()
+robot = AlphaBot(speed=50)
 
-    while True:
-        dati = connessione.recv(BUFFER)
-        print(f"Ricevuto: {dati.decode()}")
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        if dati.decode().lower() == "exit":
-            break
+s.bind((HOST, PORTA))
+s.listen(1)
+print(f"Server AlphaBot attivo sulla porta {PORTA}...")
 
-    connessione.close()
+connessione, indirizzo_client = s.accept()
+print(f"Connessione stabilita con: {indirizzo_client}")
 
-if __name__ == "__main__":
-    main()
+while True:
+    dati = connessione.recv(BUFFER_SIZE)
+    if not dati:
+        break
+
+    comando = dati.decode('utf-8').strip().lower()
+    print(f"Comando ricevuto: {comando}")
+
+    if comando == 'w':
+        robot.forward()
+    elif comando == 's':
+        robot.backward()
+    elif comando == 'a':
+        robot.left()
+    elif comando == 'd':
+        robot.right()
+    elif comando == ' ':
+        robot.stop()
+    elif comando == 'q':
+        print("Chiusura connessione...")
+        break
+
+robot.cleanup()
+s.close()
