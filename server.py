@@ -12,32 +12,49 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 s.bind((HOST, PORTA))
 s.listen(1)
-print(f"Server AlphaBot attivo sulla porta {PORTA}...")
+
+print("Server AlphaBot attivo...")
 
 connessione, indirizzo_client = s.accept()
-print(f"Connessione stabilita con: {indirizzo_client}")
+print(f"Connesso a: {indirizzo_client}")
 
-while True:
-    dati = connessione.recv(BUFFER_SIZE)
-    if not dati:
-        break
+try:
+    while True:
+        dati = connessione.recv(BUFFER_SIZE)
 
-    comando = dati.decode('utf-8').strip().lower()
-    print(f"Comando ricevuto: {comando}")
+        if not dati:
+            break
 
-    if comando == 'w':
-        robot.forward()
-    elif comando == 's':
-        robot.backward()
-    elif comando == 'a':
-        robot.left()
-    elif comando == 'd':
-        robot.right()
-    elif comando == ' ':
-        robot.stop()
-    elif comando == 'q':
-        print("Chiusura connessione...")
-        break
+        comando = dati.decode("utf-8")
 
-robot.cleanup()
-s.close()
+        for c in comando:
+            print("Comando:", c)
+
+            if c == 'w':
+                robot.forward()
+
+            elif c == 's':
+                robot.backward()
+
+            elif c == 'a':
+                robot.left()
+
+            elif c == 'd':
+                robot.right()
+
+            elif c == 'x':
+                robot.stop()
+
+            elif c == 'q':
+                print("Chiusura...")
+                break
+
+        if 'q' in comando:
+            break
+
+finally:
+    robot.stop()
+    robot.cleanup()
+    connessione.close()
+    s.close()
+    print("Server chiuso.")

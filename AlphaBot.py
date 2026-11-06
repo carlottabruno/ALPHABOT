@@ -49,25 +49,13 @@ class AlphaBot:
     def decrease_speed(self, step=10):
         self.speed = self._speed - step
 
-#    def backward(self):
-#        GPIO.output(self.IN1, GPIO.LOW)
-#        GPIO.output(self.IN2, GPIO.HIGH)
-#        GPIO.output(self.IN3, GPIO.HIGH)
-#        GPIO.output(self.IN4, GPIO.LOW)
-
-#    def forward(self):
-#        GPIO.output(self.IN1, GPIO.HIGH)
-#        GPIO.output(self.IN2, GPIO.LOW)
-#        GPIO.output(self.IN3, GPIO.LOW)
-#        GPIO.output(self.IN4, GPIO.HIGH)
-
-    def forward(self):
+    def backward(self):
         GPIO.output(self.IN1, GPIO.LOW)
         GPIO.output(self.IN2, GPIO.HIGH)
         GPIO.output(self.IN3, GPIO.HIGH)
         GPIO.output(self.IN4, GPIO.LOW)
 
-    def backward(self):
+    def forward(self):
         GPIO.output(self.IN1, GPIO.HIGH)
         GPIO.output(self.IN2, GPIO.LOW)
         GPIO.output(self.IN3, GPIO.LOW)
