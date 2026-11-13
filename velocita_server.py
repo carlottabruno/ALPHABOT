@@ -48,13 +48,13 @@ try:
             elif c == 'e':
                 # Aumenta la velocità di 10 fino a un massimo di 100
                 speed = min(100, speed + 10)
-                robot.setSpeed(speed)
+                robot.increase_speed(speed)
                 print(f"Nuova velocità: {speed}")
 
             elif c == 'r':
                 # Riduce la velocità di 10 fino a un minimo di 0
                 speed = max(0, speed - 10)
-                robot.setSpeed(speed)
+                robot.decrease_speed(speed)
                 print(f"Nuova velocità: {speed}")
 
             elif c == 'x':
